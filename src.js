@@ -1,8 +1,3 @@
-/* TODO:
-    - Username gathering from dropdown
-    - E-Mail score sending 
-*/
-
 var count = 0;
 var user = "";
 var answers = [];
@@ -44,12 +39,6 @@ $('#startButton').on('click', function(event) {
     
     } else if (count == qNum) {
         
-        $('#questionArea').html("You finished the task, Please click <b>Send</b> !");
-        $('#startButton').html("Send");
-        count += 1;
-    
-    } else {
-        
         var trueNum = 0;
 
         for (let index = 0; index < realAnswers.length; index++) {
@@ -59,11 +48,13 @@ $('#startButton').on('click', function(event) {
         }
 
         $("#startButton").remove();
+        $('#answer').remove();
 
         realStr = realAnswers.join('<br>')
         pred = answers.join('<br>')
 
         $('#questionArea').html("<h3>Your Score: " + trueNum + "/" + qNum + '</h3><hr style="border-color: white;"><h5>Your answers:</h5>' + pred + '<h5 style="padding-top: 2vh">Correct answers:</h5>' + realStr);
+    
     }
 
 });

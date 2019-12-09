@@ -1,6 +1,21 @@
 var map = L.map('mapid').setView([0, 0], 2.5);
 var geojson;
 
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = (props ? '<h5>' + props.name + '</h5><br/>' : 'Hover over a state');
+};
+
+info.addTo(map);
+
 function highlightFeature(e) {
   var layer = e.target;
 
@@ -11,13 +26,12 @@ function highlightFeature(e) {
       fillOpacity: 0.7
   });
 
-  if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-      layer.bringToFront();
-  }
+  info.update(layer.feature.properties);
 }
 
 function resetHighlight(e) {
   geojson.resetStyle(e.target);
+  info.update();
 }
 
 function onEachFeature(feature, layer) {
