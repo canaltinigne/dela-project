@@ -11,9 +11,9 @@ let questions = [
 ];
 
 let realAnswers = [
-    countries.features[77].properties.name,
-    countries.features[42].properties.name,
-    countries.features[31].properties.name
+    'Iran',
+    'Germany',
+    'China'
 ]
 
 let qNum = questions.length;
@@ -23,10 +23,11 @@ $('#startButton').on('click', function(event) {
     event.preventDefault();
     mainPage = false;
 
-    console.log(realAnswers);
+    $("#startButton").attr("disabled", true);
 
     if (count > 0 && count < qNum+1) {
-        answers.push(selectedCountry)
+        answers.push(selectedCountry);
+        selectedCountry = "";
     }
 
     $('#answer').html('');
@@ -42,27 +43,30 @@ $('#startButton').on('click', function(event) {
         var trueNum = 0;
 
         for (let index = 0; index < realAnswers.length; index++) {
-            if (realAnswers[index] == answers[index]) {
-                trueNum += 1
+            if (answers[index] == realAnswers[index]) {
+                trueNum += 1;
+            } else {
+                if (index == 1 && answers[index] == "Republic of Serbia") {
+                    trueNum += 1;
+                }
             }
         }
 
         $("#startButton").remove();
         $('#answer').remove();
 
-        realStr = realAnswers.join('<br>')
-        pred = answers.join('<br>')
+        realAnswers[1] = 'Germany / Republic of Serbia';
+        realStr = realAnswers.join('<br>');
+        pred = answers.join('<br>');
 
         $('#questionArea').html("<h3>Your Score: " + trueNum + "/" + qNum + '</h3><hr style="border-color: white;"><h5>Your answers:</h5>' + pred + '<h5 style="padding-top: 2vh">Correct answers:</h5>' + realStr);
-    
     }
-
 });
 
 function countryClick(e) {
     if (mainPage == false) {
         $('#answer').html('<h3 style="text-align: center">You think you are in ' + e.target.feature.properties.name + ' !</h3>');
         selectedCountry = e.target.feature.properties.name;
+        $('#startButton').removeAttr("disabled");
     }  
 }
-
